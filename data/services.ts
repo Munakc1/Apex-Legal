@@ -8,7 +8,7 @@ export const services: Service[] = [
   {
     category: "SEBI & Markets",
     title: "Advisory-Led Discount Broking Business Setup",
-    description: "Launch a discount broking business backed by research and advisory: structuring, exchange membership, technology and compliance."
+    description: "For entrepreneurs and finance professionals who want to start a discount broking firm. We handle entity structuring, exchange membership, technology setup and SEBI compliance from first plan to launch."
   },
   {
     category: "SEBI & Markets",
@@ -18,8 +18,16 @@ export const services: Service[] = [
   {
     category: "SEBI & Markets",
     title: "Fully Automated (Black-Box) Algo Trading Setup",
-    description: "Set up and manage algorithmic trading with regulatory, exchange, risk-control and audit requirements in place."
+    description: "Get your algo strategy or platform approved by the stock exchanges for retail traders, with documentation, due diligence and ongoing compliance support."
   },
+
+   {
+    category: "SEBI & Markets",
+    title: "US Stock Advisory",
+    description: "Structuring and compliance guidance for advisory on US-listed securities."
+  },
+  
+
   {
     category: "SEBI & Markets",
     title: "Portfolio Management Services (PMS)",
@@ -35,11 +43,7 @@ export const services: Service[] = [
     title: "Investment Adviser Registration",
     description: "Registration, client agreements, risk profiling and periodic audits for investment advisers."
   },
-  {
-    category: "SEBI & Markets",
-    title: "US Stock Advisory",
-    description: "Structuring and compliance guidance for advisory on US-listed securities."
-  },
+ 
   {
     category: "SEBI & Markets",
     title: "SEBI SCORES Complaint Handling",
@@ -166,3 +170,5 @@ export const serviceCategories = [
   "All",
   ...Array.from(new Set(services.map((s) => s.category)))
 ];
+
+
