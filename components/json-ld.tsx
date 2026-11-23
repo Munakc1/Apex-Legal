@@ -1,8 +1,11 @@
+
 import { siteUrl } from "@/lib/site";
 import { CFG } from "@/lib/config";
 import { faqs } from "@/data/faq";
 
 export function JsonLd() {
+  const faqList = Array.isArray(faqs) ? faqs : [];
+
   const schema = {
     "@context": "https://schema.org",
     "@graph": [
@@ -23,7 +26,8 @@ export function JsonLd() {
         address: [
           {
             "@type": "PostalAddress",
-            streetAddress: "Unit No. 14, First Floor, Street 76, Phase 1, Commercial Complex, Sector 76",
+            streetAddress:
+              "Unit No. 14, First Floor, Street 76, Phase 1, Commercial Complex, Sector 76",
             addressLocality: "Noida",
             addressRegion: "Uttar Pradesh",
             postalCode: "201304",
@@ -67,25 +71,31 @@ export function JsonLd() {
           },
         ],
       },
-      {
-        "@type": "FAQPage",
-        "@id": `${siteUrl}/#faq`,
-        mainEntity: faqs.map((faq) => ({
-          "@type": "Question",
-          name: faq.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: faq.answer,
-          },
-        })),
-      },
+      ...(faqList.length > 0
+        ? [
+            {
+              "@type": "FAQPage",
+              "@id": `${siteUrl}/#faq`,
+              mainEntity: faqList.map((faq) => ({
+                "@type": "Question",
+                name: faq.question,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: faq.answer,
+                },
+              })),
+            },
+          ]
+        : []),
     ],
   };
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(schema),
+      }}
     />
   );
 }
