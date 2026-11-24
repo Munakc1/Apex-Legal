@@ -15,22 +15,7 @@ export const services: Service[] = [
     title: "Algo Provider Empanelment",
     description: "Empanelment of algo providers with stock exchanges, with documentation, due diligence and ongoing compliance for retail algorithmic trading."
   },
-  {
-    category: "SEBI & Markets",
-    title: "Fully Automated (Black-Box) Algo Trading Setup",
-    description: "Get your algo strategy or platform approved by the stock exchanges for retail traders, with documentation, due diligence and ongoing compliance support."
-  },
-  {
-    category: "SEBI & Markets",
-    title: "Advisory-Led Discount Broking Business Setup",
-    description: "For entrepreneurs and finance professionals who want to start a discount broking firm. We handle entity structuring, exchange membership, technology setup and SEBI compliance from first plan to launch."
-  },
-  {
-    category: "SEBI & Markets",
-    title: "Algo Provider Empanelment",
-    description: "Empanelment of algo providers with stock exchanges, with documentation, due diligence and ongoing compliance for retail algorithmic trading."
-  },
-  {
+{
     category: "SEBI & Markets",
     title: "Fully Automated (Black-Box) Algo Trading Setup",
     description: "Get your algo strategy or platform approved by the stock exchanges for retail traders, with documentation, due diligence and ongoing compliance support."

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+// @ts-ignore — Next.js handles global CSS side-effect imports at build time.
 import "./globals.css";
 import { UIProvider } from "@/components/ui-provider";
 import { Toaster } from "@/components/toaster";
@@ -52,7 +53,7 @@ export default function RootLayout({
       <head>
         <JsonLd />
       </head>
-      <body>
+      <body><div></div>
         <UIProvider>
           <Toaster position="bottom-right" />
           <SiteHeader />

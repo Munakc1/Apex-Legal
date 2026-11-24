@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useServicesStore } from "@/lib/store";
 import { CFG } from "@/lib/config";
 import { isValidPhone, formatPhone } from "@lacspace/phone";
@@ -35,7 +36,6 @@ export function ConsultationAndPaySection() {
 
   // Validation function
   const validateEnquiry = (): boolean => {
-    // Honeypot check
     if (honeypot.trim() !== "") {
       return false;
     }
@@ -118,7 +118,6 @@ export function ConsultationAndPaySection() {
   const numericAmount = parseFloat(amountInput);
   const isValidAmount = !isNaN(numericAmount) && numericAmount > 0;
 
-  // Convert entered rupees into integer minor units (paisa)
   const amountMinor = isValidAmount ? Math.round(numericAmount * 100) : 0;
   const rateFraction = CFG.GST_RATE / 100;
   const taxResult = isValidAmount ? addTax(amountMinor, rateFraction) : null;
@@ -166,7 +165,7 @@ export function ConsultationAndPaySection() {
         <div className="w">
           <div className="two">
             {/* Request a Consultation Box */}
-            <div className="box">
+            <div className="box" style={{ display: "flex", flexDirection: "column" }}>
               <h2 style={{ fontSize: "22px" }}>Request a consultation</h2>
               <p className="note">Selected services appear below. Tap one to remove it.</p>
 
@@ -275,32 +274,33 @@ export function ConsultationAndPaySection() {
                 )}
               </div>
 
-              <div style={{ marginBottom: "16px" }}>
+              <div style={{ marginBottom: "16px", flex: 1, display: "flex", flexDirection: "column" }}>
                 <label htmlFor="m">Message</label>
-                <input
+                <textarea
                   id="m"
-                  type="text"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Briefly describe your requirement"
+                  style={{
+                    flex: 1,
+                    minHeight: "110px",
+                    resize: "none",
+                    width: "100%",
+                    padding: "10px 12px",
+                    font: "inherit",
+                    color: "var(--tx)",
+                    background: "var(--bg)",
+                    border: "1px solid var(--bd)",
+                    borderRadius: "10px",
+                  }}
                 />
               </div>
 
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                <button
-                  type="button"
-                  className="btn"
-                  id="send"
-                  onClick={handleSendWhatsApp}
-                >
+                <button type="button" className="btn" id="send" onClick={handleSendWhatsApp}>
                   Send on WhatsApp
                 </button>
-                <button
-                  type="button"
-                  className="btn o"
-                  id="mail"
-                  onClick={handleSendEmail}
-                >
+                <button type="button" className="btn o" id="mail" onClick={handleSendEmail}>
                   Send by email
                 </button>
               </div>
@@ -313,7 +313,7 @@ export function ConsultationAndPaySection() {
             </div>
 
             {/* Pay Online Box */}
-            <div className="box" id="pay">
+            <div className="box" id="pay" style={{ display: "flex", flexDirection: "column" }}>
               <h2 style={{ fontSize: "22px" }}>Pay online</h2>
               <p className="note">Pay a consultation fee or an invoice using any UPI app.</p>
 
@@ -359,7 +359,7 @@ export function ConsultationAndPaySection() {
                 />
               </div>
 
-              {/* Fee and Tax Breakdown using @lacspace/money and @lacspace/tax */}
+              {/* Fee and Tax Breakdown */}
               {isValidAmount && taxResult && (
                 <div
                   style={{
@@ -408,12 +408,7 @@ export function ConsultationAndPaySection() {
               )}
 
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
-                <button
-                  type="button"
-                  className="btn"
-                  id="up"
-                  onClick={handlePayUPI}
-                >
+                <button type="button" className="btn" id="up" onClick={handlePayUPI}>
                   Pay with UPI
                 </button>
 
@@ -428,19 +423,48 @@ export function ConsultationAndPaySection() {
                 </button>
               </div>
 
-              {/* Desktop and UPI ID guidance */}
+              {/* QR + UPI ID card */}
               <div
                 style={{
-                  marginTop: "12px",
-                  padding: "8px 12px",
+                  marginTop: "16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "18px",
                   background: "color-mix(in srgb, var(--sf) 60%, var(--bg))",
-                  border: "1px dashed var(--bd)",
-                  borderRadius: "8px",
-                  fontSize: "12px",
-                  color: "var(--mu)",
+                  border: "1px solid var(--bd)",
+                  borderRadius: "12px",
                 }}
               >
-                <div>
+                <div
+                  style={{
+                    background: "#fff",
+                    padding: "12px",
+                    borderRadius: "12px",
+                    lineHeight: 0,
+                    boxShadow: "0 2px 10px rgba(0,0,0,.08)",
+                  }}
+                >
+                  <Image
+                    src="/Apex legal QR.png"
+                    alt={`UPI QR code for ${CFG.payee}`}
+                    width={600}
+                    height={600}
+                    unoptimized
+                    priority
+                    style={{ width: "100%", maxWidth: "280px", height: "auto" }}
+                  />
+                </div>
+
+                <div style={{ fontWeight: 600, fontSize: "14px", color: "var(--tx)" }}>
+                  Scan to pay · {CFG.payee}
+                </div>
+                <div style={{ fontSize: "12px", color: "var(--mu)", textAlign: "center" }}>
+                  Works with GPay, PhonePe, Paytm, BHIM and any UPI app
+                </div>
+
+                <div style={{ fontSize: "12px", color: "var(--mu)" }}>
                   <b>UPI ID:</b>{" "}
                   <code
                     style={{
@@ -453,9 +477,6 @@ export function ConsultationAndPaySection() {
                   >
                     {CFG.upi}
                   </code>
-                </div>
-                <div style={{ marginTop: "4px" }}>
-                  Note: On desktop, pay from your phone&apos;s UPI app by entering our UPI ID.
                 </div>
               </div>
 

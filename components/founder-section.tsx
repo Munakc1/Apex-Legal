@@ -52,9 +52,11 @@ export function FounderSection() {
               </h3>
               <div className="role">Founder &amp; Managing Partner, Apex Legal</div>
               <p style={{ margin: 0, fontSize: "15px", lineHeight: 1.6 }}>
-                Two decades of regulatory and legal advisory experience. Founder of the Association
-                of Research Analysts and Investment Advisers, and former Founding Director of Univest
-                Stock Broking.
+               Founder & Managing Partner of Apex Legal, with over two decades of experience in business setup, scaling, corporate strategy and regulatory advisory.
+
+Specialises in delivering end-to-end business solutions and strategic guidance to startups, fintechs and established enterprises, covering business structuring, regulatory licensing, financial services, fundraising, IPOs, GIFT IFSC operations, cross-border business, risk management and corporate governance. Has successfully established, built and scaled an advisory-led discount stock broking business, including its complete business, operational and regulatory framework. Has led the establishment of stock broking and fund management entities in GIFT IFSC ( Deemed foreign territory) , along with corporate restructuring plans and Corporate Insolvency Resolution Process (CIRP) assignments.
+
+Provided policy inputs and regulatory recommendations to SEBI and PaRRVA and worked with the Ministry of Corporate Affairs, Head Office, New Delhi, contributing to policy formulation, regulatory approvals and parliamentary matters.
               </p>
 
               {/* ── Qualifications ── */}
