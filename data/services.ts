@@ -8,7 +8,7 @@ export const services: Service[] = [
   {
     category: "SEBI & Markets",
     title: "Advisory-Led Discount Broking Business Setup",
-    description: "For entrepreneurs and finance professionals who want to start a discount broking firm. We handle entity structuring, exchange membership, technology setup and SEBI compliance from first plan to launch."
+    description: "Advisory-led broking business solutions for entrepreneurs and finance professionals seeking to establish and grow a discount broking business. Specialised guidance on entity incorporation and structuring, exchange membership, regulatory registrations and approvals, technology infrastructure and integrations, operational setup, revenue models, monetisation strategies, regulatory compliance and business expansion—from business inception to successful launch and sustainable growth"
   },
   {
     category: "SEBI & Markets",
@@ -23,7 +23,7 @@ export const services: Service[] = [
   {
     category: "SEBI & Markets",
     title: "US Stock Advisory",
-    description: "Structuring and compliance guidance for advisory on US-listed securities."
+    description: "Advisory-led structuring and regulatory compliance solutions for offering access to US-listed securities through GIFT IFSC, covering Global Access Platform (GAP) arrangements, own Broker-Dealer and Research Analyst (RA) licensing, regulatory approvals and operational setup."
   },
   {
     category: "Litigation & Disputes",
