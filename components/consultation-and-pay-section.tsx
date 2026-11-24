@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useServicesStore } from "@/lib/store";
 import { CFG } from "@/lib/config";
@@ -10,6 +10,10 @@ import { addTax } from "@lacspace/tax";
 import { Money } from "@lacspace/money";
 import { toast } from "@lacspace/notify/react";
 import { Reveal } from "@lacspace/ui";
+
+const PAYMENT_TYPES = [
+  "Pay Online"
+];
 
 export function ConsultationAndPaySection() {
   const { selected, remove } = useServicesStore();
@@ -28,23 +32,41 @@ export function ConsultationAndPaySection() {
   }>({});
 
   // Payment form state
-  const [paymentFor, setPaymentFor] = useState("Consultation fee");
+  const [paymentFor, setPaymentFor] = useState(PAYMENT_TYPES[0]);
   const [amountInput, setAmountInput] = useState<string>("");
   const [reference, setReference] = useState("");
   const [payMessage, setPayMessage] = useState("");
   const [copiedUpi, setCopiedUpi] = useState(false);
 
-  // Validation function
+  // QR modal state
+  const [showQr, setShowQr] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+  }, []);
+
+  // Close modal on Escape + lock background scroll
+  useEffect(() => {
+    if (!showQr) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowQr(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [showQr]);
+
   const validateEnquiry = (): boolean => {
-    if (honeypot.trim() !== "") {
-      return false;
-    }
+    if (honeypot.trim() !== "") return false;
 
     const errors: { name?: string; phone?: string; email?: string } = {};
 
-    if (!name.trim()) {
-      errors.name = "Please enter your name.";
-    }
+    if (!name.trim()) errors.name = "Please enter your name.";
 
     if (!phone.trim()) {
       errors.phone = "Please enter your phone number.";
@@ -73,51 +95,33 @@ export function ConsultationAndPaySection() {
     const formattedPhone = formatPhone(phone.trim(), "international", "IN") || phone.trim();
     return (
       "Hello Apex Legal,\n" +
-      "Name: " +
-      name.trim() +
-      "\n" +
-      "Phone: " +
-      formattedPhone +
-      "\n" +
-      "Email: " +
-      email.trim() +
-      "\n" +
-      "Services: " +
-      (selected.join(", ") || "General enquiry") +
-      "\n" +
-      "Message: " +
-      message.trim()
+      "Name: " + name.trim() + "\n" +
+      "Phone: " + formattedPhone + "\n" +
+      "Email: " + email.trim() + "\n" +
+      "Services: " + (selected.join(", ") || "General enquiry") + "\n" +
+      "Message: " + message.trim()
     );
   };
 
   const handleSendWhatsApp = () => {
     if (!validateEnquiry()) return;
     toast.success("Opening WhatsApp with your enquiry...");
-    const url =
-      "https://wa.me/" +
-      CFG.whatsapp +
-      "?text=" +
-      encodeURIComponent(constructEnquiryBody());
+    const url = "https://wa.me/" + CFG.whatsapp + "?text=" + encodeURIComponent(constructEnquiryBody());
     window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const handleSendEmail = () => {
     if (!validateEnquiry()) return;
     toast.success("Opening your email client...");
-    const mailtoUrl =
-      "mailto:" +
-      CFG.email +
-      "?subject=" +
-      encodeURIComponent("Consultation request") +
-      "&body=" +
-      encodeURIComponent(constructEnquiryBody());
-    window.location.href = mailtoUrl;
+    window.location.href =
+      "mailto:" + CFG.email +
+      "?subject=" + encodeURIComponent("Consultation request") +
+      "&body=" + encodeURIComponent(constructEnquiryBody());
   };
 
-  // Payment breakdown calculation using @lacspace/money and @lacspace/tax
+  // Payment breakdown
   const numericAmount = parseFloat(amountInput);
   const isValidAmount = !isNaN(numericAmount) && numericAmount > 0;
-
   const amountMinor = isValidAmount ? Math.round(numericAmount * 100) : 0;
   const rateFraction = CFG.GST_RATE / 100;
   const taxResult = isValidAmount ? addTax(amountMinor, rateFraction) : null;
@@ -126,26 +130,25 @@ export function ConsultationAndPaySection() {
   const taxFormatted = taxResult ? Money.fromMinor(taxResult.tax, "INR").format() : "₹0.00";
   const grossFormatted = taxResult ? Money.fromMinor(taxResult.gross, "INR").format() : "₹0.00";
 
+  const paymentNote = paymentFor + (reference.trim() ? " - " + reference.trim() : "");
+
+  // Click "Pay with UPI": show QR. On mobile, also open the UPI app.
   const handlePayUPI = () => {
     if (!isValidAmount || !taxResult) {
       setPayMessage("Please enter a valid amount.");
       return;
     }
-    const totalMajor = (taxResult.gross / 100).toFixed(2);
-    const note = paymentFor + (reference.trim() ? " – " + reference.trim() : "");
-    setPayMessage("Opening your UPI app…");
+    setPayMessage("");
+    setShowQr(true);
 
-    const upiUrl =
-      "upi://pay?pa=" +
-      encodeURIComponent(CFG.upi) +
-      "&pn=" +
-      encodeURIComponent(CFG.payee) +
-      "&am=" +
-      totalMajor +
-      "&cu=INR&tn=" +
-      encodeURIComponent(note);
-
-    window.location.href = upiUrl;
+    if (isMobile) {
+            const upiUrl =
+        "upi://pay?pa=" + encodeURIComponent(CFG.upi) +
+        "&pn=" + encodeURIComponent(CFG.payee) +
+        "&am=" + (taxResult.gross / 100).toFixed(2) +
+        "&cu=INR&tn=" + encodeURIComponent(paymentNote);
+      window.location.href = upiUrl;
+    }
   };
 
   const handleCopyUpi = async () => {
@@ -167,7 +170,6 @@ export function ConsultationAndPaySection() {
             {/* Request a Consultation Box */}
             <div className="box" style={{ display: "flex", flexDirection: "column" }}>
               <h2 style={{ fontSize: "22px" }}>Request a consultation</h2>
-              <p className="note">Selected services appear below. Tap one to remove it.</p>
 
               <div className="sel" id="sel" role="list" aria-label="Selected services list">
                 {selected.length > 0 ? (
@@ -190,13 +192,11 @@ export function ConsultationAndPaySection() {
                     </span>
                   ))
                 ) : (
-                  <span className="note" style={{ border: 0, padding: "4px 0" }}>
-                    No services selected yet.
-                  </span>
+                  <span className="note" style={{ border: 0, padding: "4px 0" }} />
                 )}
               </div>
 
-              {/* Honeypot field (hidden from genuine users) */}
+              {/* Honeypot (hidden) */}
               <div style={{ display: "none" }} aria-hidden="true">
                 <label htmlFor="company_code">Leave this field blank</label>
                 <input
@@ -256,7 +256,7 @@ export function ConsultationAndPaySection() {
               </div>
 
               <div style={{ margin: "12px 0" }}>
-                <label htmlFor="e">Email (optional)</label>
+                <label htmlFor="e">Email</label>
                 <input
                   id="e"
                   type="email"
@@ -274,27 +274,17 @@ export function ConsultationAndPaySection() {
                 )}
               </div>
 
-              <div style={{ marginBottom: "16px", flex: 1, display: "flex", flexDirection: "column" }}>
+              {/* Message (was missing before) */}
+              {/* <div style={{ margin: "0 0 12px" }}>
                 <label htmlFor="m">Message</label>
                 <textarea
                   id="m"
+                  rows={3}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Briefly describe your requirement"
-                  style={{
-                    flex: 1,
-                    minHeight: "110px",
-                    resize: "none",
-                    width: "100%",
-                    padding: "10px 12px",
-                    font: "inherit",
-                    color: "var(--tx)",
-                    background: "var(--bg)",
-                    border: "1px solid var(--bd)",
-                    borderRadius: "10px",
-                  }}
+                  placeholder="Briefly describe your matter"
                 />
-              </div>
+              </div> */}
 
               <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
                 <button type="button" className="btn" id="send" onClick={handleSendWhatsApp}>
@@ -314,8 +304,7 @@ export function ConsultationAndPaySection() {
 
             {/* Pay Online Box */}
             <div className="box" id="pay" style={{ display: "flex", flexDirection: "column" }}>
-              <h2 style={{ fontSize: "22px" }}>Pay online</h2>
-              <p className="note">Pay a consultation fee or an invoice using any UPI app.</p>
+              <h2 style={{ fontSize: "22px" }}>Pay Fee online</h2>
 
               <div className="row">
                 <div>
@@ -325,10 +314,11 @@ export function ConsultationAndPaySection() {
                     value={paymentFor}
                     onChange={(e) => setPaymentFor(e.target.value)}
                   >
-                    <option>Consultation fee</option>
-                    <option>Invoice payment</option>
-                    <option>Retainer fee</option>
-                    <option>Filing or representation fee</option>
+                    {PAYMENT_TYPES.map((t) => (
+                      <option key={t} value={t}>
+                        {t}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <div>
@@ -349,13 +339,14 @@ export function ConsultationAndPaySection() {
               </div>
 
               <div style={{ margin: "12px 0" }}>
-                <label htmlFor="rf">Invoice or reference number (optional)</label>
+                <label htmlFor="rf">Remarks</label>
                 <input
                   id="rf"
                   type="text"
                   value={reference}
                   onChange={(e) => setReference(e.target.value)}
-                  placeholder="e.g. INV-2026-001"
+                  placeholder=""
+                  maxLength={50}
                 />
               </div>
 
@@ -394,14 +385,7 @@ export function ConsultationAndPaySection() {
                     <span>Total Payable:</span>
                     <span>{grossFormatted}</span>
                   </div>
-                  <div
-                    style={{
-                      fontSize: "11px",
-                      color: "var(--mu)",
-                      marginTop: "4px",
-                      fontStyle: "italic",
-                    }}
-                  >
+                  <div style={{ fontSize: "11px", color: "var(--mu)", marginTop: "4px", fontStyle: "italic" }}>
                     estimated, final invoice may vary
                   </div>
                 </div>
@@ -411,7 +395,6 @@ export function ConsultationAndPaySection() {
                 <button type="button" className="btn" id="up" onClick={handlePayUPI}>
                   Pay with UPI
                 </button>
-
                 <button
                   type="button"
                   className="btn o"
@@ -423,67 +406,9 @@ export function ConsultationAndPaySection() {
                 </button>
               </div>
 
-              {/* QR + UPI ID card */}
-              <div
-                style={{
-                  marginTop: "16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "18px",
-                  background: "color-mix(in srgb, var(--sf) 60%, var(--bg))",
-                  border: "1px solid var(--bd)",
-                  borderRadius: "12px",
-                }}
-              >
-                <div
-                  style={{
-                    background: "#fff",
-                    padding: "12px",
-                    borderRadius: "12px",
-                    lineHeight: 0,
-                    boxShadow: "0 2px 10px rgba(0,0,0,.08)",
-                  }}
-                >
-                  <Image
-                    src="/Apex legal QR.png"
-                    alt={`UPI QR code for ${CFG.payee}`}
-                    width={600}
-                    height={600}
-                    unoptimized
-                    priority
-                    style={{ width: "100%", maxWidth: "280px", height: "auto" }}
-                  />
-                </div>
-
-                <div style={{ fontWeight: 600, fontSize: "14px", color: "var(--tx)" }}>
-                  Scan to pay · {CFG.payee}
-                </div>
-                <div style={{ fontSize: "12px", color: "var(--mu)", textAlign: "center" }}>
-                  Works with GPay, PhonePe, Paytm, BHIM and any UPI app
-                </div>
-
-                <div style={{ fontSize: "12px", color: "var(--mu)" }}>
-                  <b>UPI ID:</b>{" "}
-                  <code
-                    style={{
-                      background: "var(--bg)",
-                      padding: "2px 6px",
-                      borderRadius: "4px",
-                      color: "var(--tx)",
-                      fontWeight: 600,
-                    }}
-                  >
-                    {CFG.upi}
-                  </code>
-                </div>
-              </div>
-
               <p className="note" style={{ marginTop: "10px" }}>
-                GST is added as applicable. Please share your payment confirmation with us for the receipt.
+                GST is payable by you under the Reverse Charge Mechanism (RCM), as applicable to legal services
               </p>
-
               {payMessage && (
                 <div className="msg" id="pm" role="alert">
                   {payMessage}
@@ -493,6 +418,112 @@ export function ConsultationAndPaySection() {
           </div>
         </div>
       </Reveal>
+
+      {/* QR modal: opens when "Pay with UPI" is clicked */}
+      {showQr && taxResult && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Pay with UPI QR code"
+          onClick={() => setShowQr(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            background: "rgba(0,0,0,.55)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16px",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              background: "var(--sf, #fff)",
+              border: "1px solid var(--bd)",
+              borderRadius: "16px",
+              padding: "22px",
+              width: "100%",
+              maxWidth: "360px",
+              maxHeight: "92vh",
+              overflowY: "auto",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "10px",
+              boxShadow: "0 10px 40px rgba(0,0,0,.25)",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => setShowQr(false)}
+              aria-label="Close"
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "12px",
+                background: "transparent",
+                border: 0,
+                fontSize: "20px",
+                cursor: "pointer",
+                color: "var(--mu)",
+              }}
+            >
+              ✕
+            </button>
+
+            <h3 style={{ margin: 0, fontSize: "18px" }}>Scan to pay</h3>
+            <div style={{ fontSize: "22px", fontWeight: 700, color: "var(--ac)" }}>{grossFormatted}</div>
+            <div style={{ fontSize: "12px", color: "var(--mu)", textAlign: "center" }}>{paymentNote}</div>
+
+            <div
+              style={{
+                background: "#fff",
+                padding: "12px",
+                borderRadius: "12px",
+                lineHeight: 0,
+                boxShadow: "0 2px 10px rgba(0,0,0,.08)",
+              }}
+            >
+              <Image
+                src="/Apex legal QR.png"
+                alt={`UPI QR code for ${CFG.payee}`}
+                width={600}
+                height={600}
+                unoptimized
+                priority
+                style={{ width: "100%", maxWidth: "260px", height: "auto" }}
+              />
+            </div>
+
+            <div style={{ fontSize: "12px", color: "var(--mu)" }}>
+              <b>UPI ID:</b>{" "}
+              <code
+                style={{
+                  background: "var(--bg)",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  color: "var(--tx)",
+                  fontWeight: 600,
+                }}
+              >
+                {CFG.upi}
+              </code>
+            </div>
+
+            <button
+              type="button"
+              className="btn o"
+              onClick={handleCopyUpi}
+              style={{ fontSize: "13px", padding: "10px 14px" }}
+            >
+              {copiedUpi ? "Copied ✓" : "Copy UPI ID"}
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

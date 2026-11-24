@@ -1,8 +1,14 @@
 "use client";
 
 import { Reveal } from "@lacspace/ui";
-import { FaPhoneAlt, FaWhatsapp, FaMapMarkerAlt, FaBuilding, FaDirections } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+type IconProps = { size?: number };
+
+const FaPhoneAlt = ({ size = 16 }: IconProps) => <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11 11 0 0 0 3.4.5 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17.8 17.8 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .5 3.4 1 1 0 0 1-.2 1z" /></svg>;
+const FaWhatsapp = ({ size = 16 }: IconProps) => <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .2 5.3.2 11.9c0 2.1.6 4.2 1.6 6L0 24l6.3-1.7a12 12 0 0 0 5.8 1.5h.1c6.5 0 11.8-5.3 11.8-11.9a11.8 11.8 0 0 0-3.5-8.4ZM12.1 21.8a9.9 9.9 0 0 1-5.1-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a9.9 9.9 0 1 1 8.6 4.7Zm5.4-7.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1a8.1 8.1 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6.3-.5c.1-.2 0-.4 0-.6l-.9-2.1c-.2-.5-.4-.4-.6-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.7 1.1 2.9c.1.2 2 3.1 4.8 4.3.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.6.2-1.1.2-1.3-.1-.1-.3-.2-.7-.4Z" /></svg>;
+const FaMapMarkerAlt = ({ size = 16 }: IconProps) => <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" /></svg>;
+const FaBuilding = ({ size = 16 }: IconProps) => <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M4 2h11a2 2 0 0 1 2 2v3h3v15H2V4a2 2 0 0 1 2-2Zm0 2v16h3v-3h3v3h8V9h-3V4Zm3 1h2v2H7Zm4 0h2v2h-2ZM7 9h2v2H7Zm4 0h2v2h-2Zm4 3h2v2h-2Zm-8 1h2v2H7Zm4 0h2v2h-2Z" /></svg>;
+const FaDirections = ({ size = 16 }: IconProps) => <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="m21.7 11.3-9-9a1 1 0 0 0-1.4 0l-9 9a1 1 0 0 0 0 1.4l9 9a1 1 0 0 0 1.4 0l9-9a1 1 0 0 0 0-1.4ZM12 19.6 4.4 12 12 4.4l7.6 7.6Zm-1-12.1h2v2h2a2 2 0 0 1 2 2v3h-2v-3h-2v2h-2Z" /></svg>;
+const FaEnvelope = ({ size = 16 }: IconProps) => <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M3 4h18a2 2 0 0 1 2 2v1l-11 7L1 7V6a2 2 0 0 1 2-2Zm-2 5 11 7 11-7v9a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2Z" /></svg>;
 
 const PHONE_DISPLAY = "+91 98915 20850";
 const PHONE_TEL = "+919891520850";
@@ -147,7 +153,7 @@ export function LocationsSection() {
                 <span className="ls-t"><small>WhatsApp</small>{PHONE_DISPLAY}</span>
               </a>
               <a href={`mailto:${EMAIL}`}>
-                <span className="ls-ico ls-ico-mail"><MdEmail size={20} /></span>
+                <span className="ls-ico ls-ico-mail"><FaEnvelope size={20} /></span>
                 <span className="ls-t"><small>Email</small>{EMAIL}</span>
               </a>
             </div>
