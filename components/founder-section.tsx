@@ -5,9 +5,7 @@ import { Reveal } from "@lacspace/ui";
 import { useState } from "react";
 
 const extraQualifications = [
-  "FCS (ICSI)",
-  "Registered Valuer (Securities & Financial Assets)",
-  "Social Impact Assessor",
+  "B.Com, University of Kurukshetra",
   "Qualified Research Analyst",
   "Qualified Investment Adviser",
   "ACSI (London)",
@@ -66,8 +64,11 @@ Provided policy inputs and regulatory recommendations to SEBI and PaRRVA and wor
 
               {/* Always-visible: two primary degrees */}
               <div className="cr" style={{ marginBottom: 0 }}>
-                <span>B.Com, University of Kurukshetra</span>
+                
                 <span>LL.B., Rajasthan University</span>
+                <span>FCS (ICSI)</span>
+                <span>Registered Valuer (Securities & Financial Assets)</span>
+                <span>Social impact Accessor</span>
               </div>
 
               {/* Collapsible: remaining qualifications */}
