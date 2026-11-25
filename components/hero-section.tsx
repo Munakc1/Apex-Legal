@@ -38,32 +38,16 @@ export function HeroSection() {
         </div>
 
         <div className="cta">
-          <a className="btn" href="#enquiry">
-            Book a consultation
-          </a>
-          <a className="btn o" href="#services">
-            Explore services
-          </a>
+          <a className="btn" href="#enquiry">Book a consultation</a>
+          <a className="btn o" href="#services">Explore services</a>
         </div>
       </div>
 
       <div className="panel">
-        <div>
-          <b>2008</b>
-          <small>Serving clients since</small>
-        </div>
-        <div>
-          <b>300+</b>
-          <small>Clients served</small>
-        </div>
-        <div>
-          <b>40+</b>
-          <small>People led by 10+ leaders</small>
-        </div>
-        <div>
-          <b>100+</b>
-          <small>Locations through member and collaborating firms</small>
-        </div>
+        <div><b>2008</b><small>Serving clients since</small></div>
+        <div><b>300+</b><small>Clients served</small></div>
+        <div><b>40+</b><small>People led by 10+ leaders</small></div>
+        <div><b>100+</b><small>Locations through member and collaborating firms</small></div>
       </div>
     </div>
   );

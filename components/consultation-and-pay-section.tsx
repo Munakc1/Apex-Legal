@@ -74,7 +74,10 @@ export function ConsultationAndPaySection() {
       errors.phone = "Please enter a valid phone number (e.g. +91 98915 20850).";
     }
 
-    if (email.trim() && !isValidEmail(email.trim())) {
+    // Email is now compulsory
+    if (!email.trim()) {
+      errors.email = "Please enter your email address.";
+    } else if (!isValidEmail(email.trim())) {
       errors.email = "Please enter a valid email address.";
     }
 
@@ -142,7 +145,7 @@ export function ConsultationAndPaySection() {
     setShowQr(true);
 
     if (isMobile) {
-            const upiUrl =
+      const upiUrl =
         "upi://pay?pa=" + encodeURIComponent(CFG.upi) +
         "&pn=" + encodeURIComponent(CFG.payee) +
         "&am=" + (taxResult.gross / 100).toFixed(2) +
@@ -169,31 +172,37 @@ export function ConsultationAndPaySection() {
           <div className="two">
             {/* Request a Consultation Box */}
             <div className="box" style={{ display: "flex", flexDirection: "column" }}>
-              <h2 style={{ fontSize: "22px" }}>Request a consultation</h2>
+              <h2 style={{ fontSize: "22px", marginBottom: "4px" }}>Request a consultation</h2>
 
-              <div className="sel" id="sel" role="list" aria-label="Selected services list">
-                {selected.length > 0 ? (
-                  selected.map((item) => (
-                    <span
-                      key={item}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => remove(item)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          remove(item);
-                        }
-                      }}
-                      title="Click to remove service"
-                      data-r={item}
-                    >
-                      {item} ✕
-                    </span>
-                  ))
-                ) : (
-                  <span className="note" style={{ border: 0, padding: "4px 0" }} />
-                )}
+              {/* Selected services: gap collapses when nothing is selected */}
+              <div
+                className="sel"
+                id="sel"
+                role="list"
+                aria-label="Selected services list"
+                style={{
+                  margin: selected.length > 0 ? "6px 0 8px" : "0",
+                  minHeight: 0,
+                }}
+              >
+                {selected.map((item) => (
+                  <span
+                    key={item}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => remove(item)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        remove(item);
+                      }
+                    }}
+                    title="Click to remove service"
+                    data-r={item}
+                  >
+                    {item} ✕
+                  </span>
+                ))}
               </div>
 
               {/* Honeypot (hidden) */}
@@ -209,7 +218,7 @@ export function ConsultationAndPaySection() {
                 />
               </div>
 
-              <div className="row">
+              <div className="row" style={{ marginTop: "8px" }}>
                 <div>
                   <label htmlFor="n">
                     Name <span style={{ color: "var(--rd)" }}>*</span>
@@ -256,7 +265,9 @@ export function ConsultationAndPaySection() {
               </div>
 
               <div style={{ margin: "12px 0" }}>
-                <label htmlFor="e">Email</label>
+                <label htmlFor="e">
+                  Email <span style={{ color: "var(--rd)" }}>*</span>
+                </label>
                 <input
                   id="e"
                   type="email"
@@ -266,6 +277,7 @@ export function ConsultationAndPaySection() {
                     if (fieldErrors.email) setFieldErrors({ ...fieldErrors, email: undefined });
                   }}
                   placeholder="name@example.com"
+                  aria-required="true"
                 />
                 {fieldErrors.email && (
                   <div style={{ color: "var(--rd)", fontSize: "12px", marginTop: "3px" }}>
