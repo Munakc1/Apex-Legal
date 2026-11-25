@@ -10,6 +10,16 @@ export const services: Service[] = [
     title: "Advisory-Led Discount Broking Business Setup",
     description: "Advisory-led broking business solutions for entrepreneurs and finance professionals seeking to establish and grow a discount broking business. Specialised guidance on entity incorporation and structuring, exchange membership, regulatory registrations and approvals, technology infrastructure and integrations, operational setup, revenue models, monetisation strategies, regulatory compliance and business expansion—from business inception to successful launch and sustainable growth"
   },
+   {
+    category: "SEBI & Markets",
+    title: "US Stock Advisory",
+    description: "Advisory-led structuring and regulatory compliance solutions for offering access to US-listed securities through GIFT IFSC, covering Global Access Platform (GAP) arrangements, own Broker-Dealer and Research Analyst (RA) licensing, regulatory approvals and operational setup."
+  },
+   {
+    category: "Litigation & Disputes",
+    title: "SEBI & Other Litigation",
+    description: "Settlement, compounding and adjudication before SEBI, appeals before the Securities Appellate Tribunal, and representation before RBI, IRDAI, RERA, NCLT, the Enforcement Directorate, tax authorities, High Courts and the Supreme Court."
+  },
   {
     category: "SEBI & Markets",
     title: "Algo Provider Empanelment",
@@ -19,16 +29,6 @@ export const services: Service[] = [
     category: "SEBI & Markets",
     title: "Fully Automated (Black-Box) Algo Trading Setup",
     description: "Get your algo strategy or platform approved by the stock exchanges for retail traders, with documentation, due diligence and ongoing compliance support."
-  },
-  {
-    category: "SEBI & Markets",
-    title: "US Stock Advisory",
-    description: "Advisory-led structuring and regulatory compliance solutions for offering access to US-listed securities through GIFT IFSC, covering Global Access Platform (GAP) arrangements, own Broker-Dealer and Research Analyst (RA) licensing, regulatory approvals and operational setup."
-  },
-  {
-    category: "Litigation & Disputes",
-    title: "SEBI & Other Litigation",
-    description: "Settlement, compounding and adjudication before SEBI, appeals before the Securities Appellate Tribunal, and representation before RBI, IRDAI, RERA, NCLT, the Enforcement Directorate, tax authorities, High Courts and the Supreme Court."
   },
   {
     category: "IPO & Capital",

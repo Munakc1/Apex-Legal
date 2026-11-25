@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { CSSProperties } from "react";
 import Image from "next/image";
 import { useServicesStore } from "@/lib/store";
 import { CFG } from "@/lib/config";
@@ -14,6 +15,15 @@ import { Reveal } from "@lacspace/ui";
 const PAYMENT_TYPES = [
   "Pay Online"
 ];
+
+// Compact style for the enquiry inputs (Name, Phone, Email)
+const compactInput: CSSProperties = {
+  padding: "7px 10px",
+  fontSize: "14px",
+  minHeight: 0,
+  height: "auto",
+  width: "100%",
+};
 
 export function ConsultationAndPaySection() {
   const { selected, remove } = useServicesStore();
@@ -218,53 +228,57 @@ export function ConsultationAndPaySection() {
                 />
               </div>
 
-              <div className="row" style={{ marginTop: "8px" }}>
-                <div>
-                  <label htmlFor="n">
-                    Name <span style={{ color: "var(--rd)" }}>*</span>
-                  </label>
-                  <input
-                    id="n"
-                    type="text"
-                    value={name}
-                    onChange={(e) => {
-                      setName(e.target.value);
-                      if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined });
-                    }}
-                    placeholder="Your full name"
-                    aria-required="true"
-                  />
-                  {fieldErrors.name && (
-                    <div style={{ color: "var(--rd)", fontSize: "12px", marginTop: "3px" }}>
-                      {fieldErrors.name}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <label htmlFor="p">
-                    Phone <span style={{ color: "var(--rd)" }}>*</span>
-                  </label>
-                  <input
-                    id="p"
-                    type="tel"
-                    inputMode="tel"
-                    value={phone}
-                    onChange={(e) => {
-                      setPhone(e.target.value);
-                      if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined });
-                    }}
-                    placeholder="+91 98915 20850"
-                    aria-required="true"
-                  />
-                  {fieldErrors.phone && (
-                    <div style={{ color: "var(--rd)", fontSize: "12px", marginTop: "3px" }}>
-                      {fieldErrors.phone}
-                    </div>
-                  )}
-                </div>
+              {/* Name */}
+              <div style={{ marginTop: "8px" }}>
+                <label htmlFor="n">
+                  Name <span style={{ color: "var(--rd)" }}>*</span>
+                </label>
+                <input
+                  id="n"
+                  type="text"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (fieldErrors.name) setFieldErrors({ ...fieldErrors, name: undefined });
+                  }}
+                  placeholder="Your full name"
+                  aria-required="true"
+                  style={compactInput}
+                />
+                {fieldErrors.name && (
+                  <div style={{ color: "var(--rd)", fontSize: "12px", marginTop: "3px" }}>
+                    {fieldErrors.name}
+                  </div>
+                )}
               </div>
 
-              <div style={{ margin: "12px 0" }}>
+              {/* Phone */}
+              <div style={{ marginTop: "10px" }}>
+                <label htmlFor="p">
+                  Phone <span style={{ color: "var(--rd)" }}>*</span>
+                </label>
+                <input
+                  id="p"
+                  type="tel"
+                  inputMode="tel"
+                  value={phone}
+                  onChange={(e) => {
+                    setPhone(e.target.value);
+                    if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined });
+                  }}
+                  placeholder="+91 98915 20850"
+                  aria-required="true"
+                  style={compactInput}
+                />
+                {fieldErrors.phone && (
+                  <div style={{ color: "var(--rd)", fontSize: "12px", marginTop: "3px" }}>
+                    {fieldErrors.phone}
+                  </div>
+                )}
+              </div>
+
+              {/* Email */}
+              <div style={{ margin: "10px 0 12px" }}>
                 <label htmlFor="e">
                   Email <span style={{ color: "var(--rd)" }}>*</span>
                 </label>
@@ -278,6 +292,7 @@ export function ConsultationAndPaySection() {
                   }}
                   placeholder="name@example.com"
                   aria-required="true"
+                  style={compactInput}
                 />
                 {fieldErrors.email && (
                   <div style={{ color: "var(--rd)", fontSize: "12px", marginTop: "3px" }}>
@@ -291,10 +306,11 @@ export function ConsultationAndPaySection() {
                 <label htmlFor="m">Message</label>
                 <textarea
                   id="m"
-                  rows={3}
+                  rows={2}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Briefly describe your matter"
+                  style={compactInput}
                 />
               </div> */}
 

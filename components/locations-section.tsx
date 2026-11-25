@@ -65,10 +65,10 @@ export function LocationsSection() {
         .ls-dir {
           display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
           padding: 10px 18px; border-radius: 8px;
-          background: #14345e; color: #fff; font-weight: 600; font-size: 14px;
+          background: #1a73e8; color: #fff; font-weight: 600; font-size: 14px;
           text-decoration: none; transition: transform .15s, background .15s;
         }
-        .ls-dir:hover { background: #0b1f3a; transform: translateY(-1px); }
+        .ls-dir:hover { background: #1557b0; transform: translateY(-1px); }
 
         .ls-contact { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
         .ls-contact a {
@@ -116,7 +116,7 @@ export function LocationsSection() {
 
       <Reveal className="rv">
         <div className="ls-wrap">
-          <h2>Our locations</h2>
+          <h2>Branch obligations</h2>
 
           {/* Main office */}
           <div className="ls-main">
