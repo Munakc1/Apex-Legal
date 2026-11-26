@@ -1,9 +1,87 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { services, serviceCategories } from "@/data/services";
 import { useServicesStore } from "@/lib/store";
 import { Reveal } from "@lacspace/ui";
+
+type ServiceCardProps = {
+  category: string;
+  title: string;
+  description: string;
+  isAdded: boolean;
+  onToggle: () => void;
+};
+
+function ServiceCard({
+  category,
+  title,
+  description,
+  isAdded,
+  onToggle,
+}: ServiceCardProps) {
+  const [expanded, setExpanded] = useState(false);
+  const [overflowing, setOverflowing] = useState(false);
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  // Detect whether the description is longer than the 4-line limit.
+  // Measured only while collapsed, so the result stays valid when expanded.
+  useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+
+    const check = () => {
+      if (expanded) return;
+      setOverflowing(el.scrollHeight > el.clientHeight + 1);
+    };
+
+    check();
+
+    const observer = new ResizeObserver(check);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [description, expanded]);
+
+  const descId = `desc-${title.replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase()}`;
+
+  return (
+    <div className="card">
+      <div className="tag">{category}</div>
+      <h3>{title}</h3>
+
+      <p
+        id={descId}
+        ref={textRef}
+        className={expanded ? undefined : "clamp"}
+      >
+        {description}
+      </p>
+
+      <div className="more-row">
+        {(overflowing || expanded) && (
+          <button
+            type="button"
+            className="more-btn"
+            onClick={() => setExpanded((v) => !v)}
+            aria-expanded={expanded}
+            aria-controls={descId}
+          >
+            {expanded ? "See less ▲" : "See more ▼"}
+          </button>
+        )}
+      </div>
+
+      <button
+        type="button"
+        className={`btn${isAdded ? " o" : ""}`}
+        onClick={onToggle}
+        aria-label={`${isAdded ? "Remove" : "Add"} ${title} to enquiry`}
+      >
+        {isAdded ? "Added ✓" : "Add to enquiry"}
+      </button>
+    </div>
+  );
+}
 
 export function ServicesSection() {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -73,24 +151,16 @@ export function ServicesSection() {
 
           <div className="grid" id="grid">
             {filteredServices.length > 0 ? (
-              filteredServices.map((service) => {
-                const isAdded = selected.includes(service.title);
-                return (
-                  <div key={service.title} className="card">
-                    <div className="tag">{service.category}</div>
-                    <h3>{service.title}</h3>
-                    <p>{service.description}</p>
-                    <button
-                      type="button"
-                      className={`btn${isAdded ? " o" : ""}`}
-                      onClick={() => toggle(service.title)}
-                      aria-label={`${isAdded ? "Remove" : "Add"} ${service.title} to enquiry`}
-                    >
-                      {isAdded ? "Added ✓" : "Add to enquiry"}
-                    </button>
-                  </div>
-                );
-              })
+              filteredServices.map((service) => (
+                <ServiceCard
+                  key={service.title}
+                  category={service.category}
+                  title={service.title}
+                  description={service.description}
+                  isAdded={selected.includes(service.title)}
+                  onToggle={() => toggle(service.title)}
+                />
+              ))
             ) : (
               <div
                 style={{

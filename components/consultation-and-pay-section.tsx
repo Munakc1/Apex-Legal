@@ -151,6 +151,11 @@ export function ConsultationAndPaySection() {
       setPayMessage("Please enter a valid amount.");
       return;
     }
+    // Remarks is compulsory
+    if (!reference.trim()) {
+      setPayMessage("Please enter your remarks.");
+      return;
+    }
     setPayMessage("");
     setShowQr(true);
 
@@ -367,14 +372,21 @@ export function ConsultationAndPaySection() {
               </div>
 
               <div style={{ margin: "12px 0" }}>
-                <label htmlFor="rf">Remarks</label>
+                <label htmlFor="rf">
+                  Remarks <span style={{ color: "var(--rd)" }}>*</span>
+                </label>
                 <input
                   id="rf"
                   type="text"
                   value={reference}
-                  onChange={(e) => setReference(e.target.value)}
+                  onChange={(e) => {
+                    setReference(e.target.value);
+                    setPayMessage("");
+                  }}
                   placeholder=""
                   maxLength={50}
+                  required
+                  aria-required="true"
                 />
               </div>
 

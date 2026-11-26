@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Reveal } from "@lacspace/ui";
 type IconProps = { size?: number };
 
@@ -15,18 +16,29 @@ const PHONE_TEL = "+919891520850";
 const WHATSAPP_NUMBER = "919891520850"; // digits only, with country code
 const EMAIL = "compliance.apexlegal@gmail.com";
 
-const MAIN_ADDRESS =
+// Short text shown on the page
+const MAIN_ADDRESS_SHORT = "Sector 76, Noida, Uttar Pradesh – 201304";
+// Full address is only used for the Google Maps link
+const MAIN_ADDRESS_FULL =
   "Unit No. 14, First Floor, Street 76, Phase 1, Commercial Complex, Sector 76, Noida, Gautam Buddha Nagar – 201304";
 
-const otherOffices = [
-  { city: "Gurugram", address: "Sector 45, Gurugram, Haryana" },
-  { city: "Delhi", address: "Dwarka, New Delhi" },
+// Main cities shown on the map
+const branchCities = [
+  { city: "Mumbai", query: "Mumbai, Maharashtra, India" },
+  { city: "Delhi", query: "New Delhi, India"},
+  { city: "Hyderabad", query: "Hyderabad, Telangana, India" },
+  { city: "Chennai", query: "Chennai, Tamil Nadu, India"}
 ];
 
 const mapsUrl = (q: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
+const embedUrl = (q: string) =>
+  `https://www.google.com/maps?q=${encodeURIComponent(q)}&z=11&output=embed`;
+
 export function LocationsSection() {
+  const [active, setActive] = useState(branchCities[1]); // Delhi by default
+
   return (
     <section id="contact">
       <style>{`
@@ -92,31 +104,50 @@ export function LocationsSection() {
         .ls-contact small { display: block; font-size: 11px; color: #5b6b82; text-transform: uppercase; letter-spacing: .8px; }
         .ls-contact span.ls-t { word-break: break-all; }
 
-        /* ---------- Other offices ---------- */
+        /* ---------- Branch obligations ---------- */
         .ls-sub { margin: 36px 0 16px; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #5b6b82; }
-        .ls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+        .ls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
         .ls-card {
-          display: flex; gap: 16px; align-items: flex-start;
-          padding: 22px; border-radius: 12px; background: #fff;
+          display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: left;
+          padding: 18px; border-radius: 12px; background: #fff; cursor: pointer;
           border: 1px solid #e3e8ef; border-top: 3px solid #14345e;
-          box-shadow: 0 2px 8px rgba(0,0,0,.04); transition: box-shadow .2s, transform .2s;
+          box-shadow: 0 2px 8px rgba(0,0,0,.04); transition: box-shadow .2s, transform .2s, border-color .2s;
+          font-family: inherit;
         }
         .ls-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,.08); transform: translateY(-2px); }
+        .ls-card.on { border-color: #1a73e8; border-top-color: #1a73e8; box-shadow: 0 8px 20px rgba(26,115,232,.18); }
+        .ls-card:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
         .ls-card .ls-pin { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #eaf0f9; color: #14345e; }
-        .ls-card b { display: block; font-size: 18px; color: #0b1f3a; margin-bottom: 4px; }
-        .ls-card span { color: #5b6b82; font-size: 14px; line-height: 1.5; }
-        .ls-card a { display: inline-block; margin-top: 8px; font-size: 13px; font-weight: 600; color: #14345e; text-decoration: none; }
-        .ls-card a:hover { text-decoration: underline; }
+        .ls-card.on .ls-pin { background: #1a73e8; color: #fff; }
+        .ls-card b { display: block; font-size: 17px; color: #0b1f3a; margin-bottom: 4px; }
+        .ls-card span { color: #5b6b82; font-size: 13px; line-height: 1.5; }
+
+        .ls-map { margin-top: 20px; border-radius: 14px; overflow: hidden; border: 1px solid #e3e8ef; box-shadow: 0 4px 14px rgba(11,31,58,.06); background: #fff; }
+        .ls-map iframe { display: block; width: 100%; height: 360px; border: 0; }
+        .ls-map-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; font-size: 14px; color: #0b1f3a; }
+        .ls-map-bar a { font-weight: 600; font-size: 13px; color: #1a73e8; text-decoration: none; }
+        .ls-map-bar a:hover { text-decoration: underline; }
+
+        /* ---------- Disclaimer ---------- */
+        .ls-disc {
+          margin-top: 32px; padding: 20px 22px; border-radius: 12px;
+          background: #f6f9fd; border: 1px solid #e3e8ef; border-left: 4px solid #14345e;
+          color: #5b6b82; font-size: 13px; line-height: 1.65;
+        }
+        .ls-disc b { display: block; margin-bottom: 6px; color: #0b1f3a; font-size: 14px; letter-spacing: .4px; text-transform: uppercase; }
+        .ls-disc p { margin: 0 0 8px; }
+        .ls-disc p:last-child { margin-bottom: 0; }
 
         @media (max-width: 760px) {
           .ls-main { grid-template-columns: 1fr; padding: 28px 24px 28px 28px; }
           .ls-main h3 { font-size: 26px; }
+          .ls-map iframe { height: 280px; }
         }
       `}</style>
 
       <Reveal className="rv">
         <div className="ls-wrap">
-          <h2>Branch obligations</h2>
+          <h2>Our offices</h2>
 
           {/* Main office */}
           <div className="ls-main">
@@ -127,11 +158,11 @@ export function LocationsSection() {
               <h3>Noida</h3>
               <div className="ls-main-addr">
                 <FaMapMarkerAlt />
-                <span>{MAIN_ADDRESS}</span>
+                <span>{MAIN_ADDRESS_SHORT}</span>
               </div>
               <a
                 className="ls-dir"
-                href={mapsUrl(MAIN_ADDRESS)}
+                href={mapsUrl(MAIN_ADDRESS_FULL)}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -159,23 +190,56 @@ export function LocationsSection() {
             </div>
           </div>
 
-          {/* Other offices */}
-          <p className="ls-sub">Other Offices</p>
-          <div className="ls-grid">
-            {otherOffices.map((o) => (
-              <div className="ls-card" key={o.city}>
+          {/* Branch obligations: main cities + map */}
+          <p className="ls-sub">Branch Obligations</p>
+          <div className="ls-grid" role="tablist" aria-label="Branch cities">
+            {branchCities.map((c) => (
+              <button
+                type="button"
+                role="tab"
+                aria-selected={active.city === c.city}
+                className={`ls-card${active.city === c.city ? " on" : ""}`}
+                key={c.city}
+                onClick={() => setActive(c)}
+              >
                 <div className="ls-pin"><FaMapMarkerAlt /></div>
                 <div>
-                  <b>{o.city}</b>
-                  <span>{o.address}</span>
-                  <br />
-                  <a href={mapsUrl(`${o.address}`)} target="_blank" rel="noopener noreferrer">
-                    View on map →
-                  </a>
+                  <b>{c.city}</b>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
+
+          <div className="ls-map">
+            <iframe
+              key={active.city}
+              title={`Map of ${active.city}`}
+              src={embedUrl(active.query)}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <div className="ls-map-bar">
+              <span><b>{active.city}</b></span>
+              <a href={mapsUrl(active.query)} target="_blank" rel="noopener noreferrer">
+                Open in Google Maps →
+              </a>
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          {/* <div className="ls-disc" role="note" aria-label="Disclaimer">
+            <b>Disclaimer</b>
+            <p>
+              As per the rules of the Bar Council of India, we are not permitted to solicit work
+              or advertise. The information on this website is provided only for general
+              informational purposes and does not create a lawyer–client relationship.
+            </p>
+            <p>
+              If you have any legal issue, you must seek independent legal advice before taking
+              any action.
+            </p>
+          </div> */}
         </div>
       </Reveal>
     </section>

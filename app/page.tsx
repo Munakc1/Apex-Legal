@@ -6,6 +6,7 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { FounderSection } from "@/components/founder-section";
 import { ConsultationAndPaySection } from "@/components/consultation-and-pay-section";
 import { LocationsSection } from "@/components/locations-section";
+import { DisclaimerModal} from "@/components/DisclaimerModal";
 // import { FaqSection } from "@/components/faq-section";
 
 export default function HomePage() {
@@ -19,6 +20,8 @@ export default function HomePage() {
       <FounderSection />
       <ConsultationAndPaySection />
       <LocationsSection />
+      <DisclaimerModal />
+
       {/* <FaqSection /> */}
     </main>
   );

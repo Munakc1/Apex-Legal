@@ -44,10 +44,22 @@ export function HeroSection() {
       </div>
 
       <div className="panel">
-        <div><b>2008</b><small>Serving clients since</small></div>
-        <div><b>300+</b><small>Clients served</small></div>
-        <div><b>40+</b><small>People led by 10+ leaders</small></div>
-        <div><b>100+</b><small>Locations through member and collaborating firms</small></div>
+        <div className="stat">
+          <b>2008</b>
+          <small>Serving clients since</small>
+        </div>
+        <div className="stat">
+          <b>300<em>+</em></b>
+          <small>Clients served</small>
+        </div>
+        <div className="stat">
+          <b>40<em>+</em></b>
+          <small>People led by 10+ leaders</small>
+        </div>
+        <div className="stat">
+          <b>100<em>+</em></b>
+          <small>Locations through member and collaborating firms</small>
+        </div>
       </div>
     </div>
   );

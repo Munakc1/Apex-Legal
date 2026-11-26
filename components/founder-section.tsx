@@ -5,10 +5,10 @@ import { Reveal } from "@lacspace/ui";
 import { useState } from "react";
 
 const extraQualifications = [
-  "B.Com, University of Kurukshetra",
+  "B.Com",
   "Qualified Research Analyst",
   "Qualified Investment Adviser",
-  "ACSI (London)",
+  "ACSI",
   "NCMP",
   "CPFA",
   "Trade Mark Attorney",
@@ -50,11 +50,8 @@ export function FounderSection() {
               </h3>
               <div className="role">Founder &amp; Managing Partner, Apex Legal</div>
               <p style={{ margin: 0, fontSize: "15px", lineHeight: 1.6 }}>
-               Founder & Managing Partner of Apex Legal, with over two decades of experience in business setup, scaling, corporate strategy and regulatory advisory.
-
-Specialises in delivering end-to-end business solutions and strategic guidance to startups, fintechs and established enterprises, covering business structuring, regulatory licensing, financial services, fundraising, IPOs, GIFT IFSC operations, cross-border business, risk management and corporate governance. Has successfully established, built and scaled an advisory-led discount stock broking business, including its complete business, operational and regulatory framework. Has led the establishment of stock broking and fund management entities in GIFT IFSC ( Deemed foreign territory) , along with corporate restructuring plans and Corporate Insolvency Resolution Process (CIRP) assignments.
-
-Provided policy inputs and regulatory recommendations to SEBI and PaRRVA and worked with the Ministry of Corporate Affairs, Head Office, New Delhi, contributing to policy formulation, regulatory approvals and parliamentary matters.
+               Founder & Managing Partner of Apex Legal, with over two decades of experience in corporate strategy, business establishment, scaling and regulatory advisory. Specialises in fintech, stock broking, financial services, fundraising, IPOs, GIFT IFSC, cross-border transactions, corporate restructuring, CIRP, risk management and corporate governance. Has successfully established and scaled advisory-led broking businesses and GIFT IFSC entities, while contributing to policy and regulatory initiatives 
+               involving SEBI, PaRRVA and the Ministry of Corporate Affairs (MCA), New Delhi.
               </p>
 
               {/* ── Qualifications ── */}
@@ -65,9 +62,9 @@ Provided policy inputs and regulatory recommendations to SEBI and PaRRVA and wor
               {/* Always-visible: two primary degrees */}
               <div className="cr" style={{ marginBottom: 0 }}>
                 
-                <span>LL.B., Rajasthan University</span>
-                <span>FCS (ICSI)</span>
-                <span>Registered Valuer (Securities & Financial Assets)</span>
+                <span>LL.B.</span>
+                <span>FCS </span>
+                <span>Registered Valuer</span>
                 <span>Social impact Accessor</span>
               </div>
 
