@@ -66,7 +66,7 @@ function ServiceCard({
             aria-expanded={expanded}
             aria-controls={descId}
           >
-            {expanded ? "See less ▲" : "See more ▼"}
+            {expanded ? "See less" : "See more"}
           </button>
         )}
       </div>

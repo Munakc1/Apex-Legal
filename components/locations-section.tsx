@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Reveal } from "@lacspace/ui";
 type IconProps = { size?: number };
 
@@ -22,23 +21,22 @@ const MAIN_ADDRESS_SHORT = "Sector 76, Noida, Uttar Pradesh – 201304";
 const MAIN_ADDRESS_FULL =
   "Unit No. 14, First Floor, Street 76, Phase 1, Commercial Complex, Sector 76, Noida, Gautam Buddha Nagar – 201304";
 
-// Main cities shown on the map
+// Main cities of India (names only)
 const branchCities = [
-  { city: "Mumbai", query: "Mumbai, Maharashtra, India" },
-  { city: "Delhi", query: "New Delhi, India"},
-  { city: "Hyderabad", query: "Hyderabad, Telangana, India" },
-  { city: "Chennai", query: "Chennai, Tamil Nadu, India"}
+  "Noida",
+  "Delhi",
+  "Gurugram",
+  "Mumbai",
+  "Hyderabad",
+  "Chennai",
+  "Bengaluru",
+  "Ahmedabad",
 ];
 
 const mapsUrl = (q: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
 
-const embedUrl = (q: string) =>
-  `https://www.google.com/maps?q=${encodeURIComponent(q)}&z=11&output=embed`;
-
 export function LocationsSection() {
-  const [active, setActive] = useState(branchCities[1]); // Delhi by default
-
   return (
     <section id="contact">
       <style>{`
@@ -83,7 +81,7 @@ export function LocationsSection() {
         .ls-dir:hover { background: #1557b0; transform: translateY(-1px); }
 
         .ls-contact { display: flex; flex-direction: column; justify-content: center; gap: 12px; }
-        .ls-contact a {
+        .ls-row {
           display: flex; align-items: center; gap: 14px;
           padding: 14px 16px; border-radius: 10px;
           background: #f6f9fd;
@@ -92,41 +90,34 @@ export function LocationsSection() {
           font-variant-numeric: tabular-nums;
           transition: background .15s, border-color .15s, transform .15s;
         }
-        .ls-contact a:hover { background: #eaf0f9; border-color: #c9d8ee; transform: translateX(3px); }
+        .ls-row:hover { background: #eaf0f9; border-color: #c9d8ee; transform: translateX(3px); }
+        .ls-icos { flex: none; display: flex; align-items: center; gap: 8px; }
         .ls-ico {
           flex: none; width: 38px; height: 38px; border-radius: 50%;
           display: grid; place-items: center; color: #fff; font-size: 18px;
+          text-decoration: none; transition: transform .15s;
         }
+        .ls-ico:hover { transform: scale(1.08); }
         .ls-ico svg { display: block; flex: none; }
         .ls-ico-phone { background: #1a73e8; }
         .ls-ico-wa { background: #25d366; }
         .ls-ico-mail { background: #ea4335; }
-        .ls-contact small { display: block; font-size: 11px; color: #5b6b82; text-transform: uppercase; letter-spacing: .8px; }
-        .ls-contact span.ls-t { word-break: break-all; }
+        .ls-row small { display: block; font-size: 11px; color: #5b6b82; text-transform: uppercase; letter-spacing: .8px; }
+        .ls-row .ls-t { word-break: break-all; }
+        .ls-row .ls-t a { color: inherit; text-decoration: none; }
 
-        /* ---------- Branch obligations ---------- */
+        /* ---------- Main cities ---------- */
         .ls-sub { margin: 36px 0 16px; font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #5b6b82; }
         .ls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
         .ls-card {
-          display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: left;
-          padding: 18px; border-radius: 12px; background: #fff; cursor: pointer;
+          display: flex; gap: 14px; align-items: center; width: 100%; text-align: left;
+          padding: 18px; border-radius: 12px; background: #fff;
           border: 1px solid #e3e8ef; border-top: 3px solid #14345e;
-          box-shadow: 0 2px 8px rgba(0,0,0,.04); transition: box-shadow .2s, transform .2s, border-color .2s;
+          box-shadow: 0 2px 8px rgba(0,0,0,.04);
           font-family: inherit;
         }
-        .ls-card:hover { box-shadow: 0 8px 20px rgba(0,0,0,.08); transform: translateY(-2px); }
-        .ls-card.on { border-color: #1a73e8; border-top-color: #1a73e8; box-shadow: 0 8px 20px rgba(26,115,232,.18); }
-        .ls-card:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; }
         .ls-card .ls-pin { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; background: #eaf0f9; color: #14345e; }
-        .ls-card.on .ls-pin { background: #1a73e8; color: #fff; }
-        .ls-card b { display: block; font-size: 17px; color: #0b1f3a; margin-bottom: 4px; }
-        .ls-card span { color: #5b6b82; font-size: 13px; line-height: 1.5; }
-
-        .ls-map { margin-top: 20px; border-radius: 14px; overflow: hidden; border: 1px solid #e3e8ef; box-shadow: 0 4px 14px rgba(11,31,58,.06); background: #fff; }
-        .ls-map iframe { display: block; width: 100%; height: 360px; border: 0; }
-        .ls-map-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 12px 16px; font-size: 14px; color: #0b1f3a; }
-        .ls-map-bar a { font-weight: 600; font-size: 13px; color: #1a73e8; text-decoration: none; }
-        .ls-map-bar a:hover { text-decoration: underline; }
+        .ls-card b { display: block; font-size: 17px; color: #0b1f3a; }
 
         /* ---------- Disclaimer ---------- */
         .ls-disc {
@@ -141,13 +132,12 @@ export function LocationsSection() {
         @media (max-width: 760px) {
           .ls-main { grid-template-columns: 1fr; padding: 28px 24px 28px 28px; }
           .ls-main h3 { font-size: 26px; }
-          .ls-map iframe { height: 280px; }
         }
       `}</style>
 
       <Reveal className="rv">
         <div className="ls-wrap">
-          <h2>Our offices</h2>
+          <h2>Our Offices</h2>
 
           {/* Main office */}
           <div className="ls-main">
@@ -171,60 +161,50 @@ export function LocationsSection() {
             </div>
 
             <div className="ls-contact">
-              <a href={`tel:${PHONE_TEL}`}>
-                <span className="ls-ico ls-ico-phone"><FaPhoneAlt size={18} /></span>
-                <span className="ls-t"><small>Phone</small>{PHONE_DISPLAY}</span>
-              </a>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="ls-ico ls-ico-wa"><FaWhatsapp size={22} /></span>
-                <span className="ls-t"><small>WhatsApp</small>{PHONE_DISPLAY}</span>
-              </a>
-              <a href={`mailto:${EMAIL}`}>
+              {/* Phone + WhatsApp: one number, one box */}
+              <div className="ls-row">
+                <div className="ls-icos">
+                  <a
+                    className="ls-ico ls-ico-phone"
+                    href={`tel:${PHONE_TEL}`}
+                    aria-label="Call us"
+                  >
+                    <FaPhoneAlt size={18} />
+                  </a>
+                  <a
+                    className="ls-ico ls-ico-wa"
+                    href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Chat on WhatsApp"
+                  >
+                    <FaWhatsapp size={22} />
+                  </a>
+                </div>
+                <span className="ls-t">
+                  <small>Phone / WhatsApp</small>
+                  <a href={`tel:${PHONE_TEL}`}>{PHONE_DISPLAY}</a>
+                </span>
+              </div>
+
+              <a className="ls-row" href={`mailto:${EMAIL}`}>
                 <span className="ls-ico ls-ico-mail"><FaEnvelope size={20} /></span>
                 <span className="ls-t"><small>Email</small>{EMAIL}</span>
               </a>
             </div>
           </div>
 
-          {/* Branch obligations: main cities + map */}
-          <p className="ls-sub">Branch Obligations</p>
-          <div className="ls-grid" role="tablist" aria-label="Branch cities">
-            {branchCities.map((c) => (
-              <button
-                type="button"
-                role="tab"
-                aria-selected={active.city === c.city}
-                className={`ls-card${active.city === c.city ? " on" : ""}`}
-                key={c.city}
-                onClick={() => setActive(c)}
-              >
+          {/* Main cities of India (names only) */}
+          <p className="ls-sub">PAN India Offices</p>
+          <div className="ls-grid">
+            {branchCities.map((city) => (
+              <div className="ls-card" key={city}>
                 <div className="ls-pin"><FaMapMarkerAlt /></div>
                 <div>
-                  <b>{c.city}</b>
+                  <b>{city}</b>
                 </div>
-              </button>
+              </div>
             ))}
-          </div>
-
-          <div className="ls-map">
-            <iframe
-              key={active.city}
-              title={`Map of ${active.city}`}
-              src={embedUrl(active.query)}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-            <div className="ls-map-bar">
-              <span><b>{active.city}</b></span>
-              <a href={mapsUrl(active.query)} target="_blank" rel="noopener noreferrer">
-                Open in Google Maps →
-              </a>
-            </div>
           </div>
 
           {/* Disclaimer */}

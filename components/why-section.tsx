@@ -16,8 +16,7 @@ export function WhySection() {
             <div>
               <b>Legal and strategy under one roof</b>
               <span>
-                Regulatory, transaction, tax, risk and ESG advice, from setup to
-                litigation.
+               Integrated strategic, legal, regulatory, transactional, tax, risk and ESG advisory, delivering comprehensive end-to-end business solutions.
               </span>
             </div>
             <div>

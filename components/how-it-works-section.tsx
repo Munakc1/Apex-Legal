@@ -20,7 +20,7 @@ export function HowItWorksSection() {
             </div>
             <div>
               <b>Engage and pay online</b>
-              <span>Confirm scope and pay securely online with UPI.</span>
+              <span>Confirm scope and pay securely online.</span>
             </div>
             <div>
               <b>Execution and follow-up</b>

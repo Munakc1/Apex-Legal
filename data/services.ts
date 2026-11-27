@@ -119,9 +119,9 @@ export const services: Service[] = [
   },
   {
     category: "IPO & Capital",
-    title: "Fund-Raising Advisory",
+    title: "Investor Relations, Listing & Fund-Raising Advisory",
     description:
-      "Equity, debt, ECB, NCD, CCD and CCPS options, with investor management and documentation.",
+      "Advisory on equity and debt fundraising, including ECB, NCD, CCD and CCPS, investor relations and management, listing compliance, corporate governance, SEBI regulations and stock exchange requirements.",
   },
   {
     category: "Strategy & Transactions",

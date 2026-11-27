@@ -271,7 +271,7 @@ export function ConsultationAndPaySection() {
                     setPhone(e.target.value);
                     if (fieldErrors.phone) setFieldErrors({ ...fieldErrors, phone: undefined });
                   }}
-                  placeholder="+91 98915 20850"
+                  placeholder="+91 98176 28976"
                   aria-required="true"
                   style={compactInput}
                 />
@@ -337,10 +337,10 @@ export function ConsultationAndPaySection() {
 
             {/* Pay Online Box */}
             <div className="box" id="pay" style={{ display: "flex", flexDirection: "column" }}>
-              <h2 style={{ fontSize: "22px" }}>Pay Fee online</h2>
+              <h2 style={{ fontSize: "22px" }}>Pay Online</h2>
 
               <div className="row">
-                <div>
+                {/* <div>
                   <label htmlFor="pf">Payment for</label>
                   <select
                     id="pf"
@@ -353,7 +353,7 @@ export function ConsultationAndPaySection() {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
                 <div>
                   <label htmlFor="am">Amount (₹)</label>
                   <input

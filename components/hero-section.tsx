@@ -7,7 +7,7 @@ export function HeroSection() {
 
         <div className="hero-text">
           <p>
-            Your Trusted Partner in Business, Legal &amp; Wealth Advisory. Apex
+            Your Trusted Partner in Business, Legal &amp; Strategic advisory. Apex
             Legal is a trusted partner in business advisory, legal solutions
             and wealth protection, empowering entrepreneurs, startups,
             businesses, financial-market participants, intermediaries,
